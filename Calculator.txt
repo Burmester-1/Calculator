@@ -1,0 +1,571 @@
+package chap1011;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+public class Calculator extends JFrame implements ActionListener {
+	double sum = 0;  //C键的总数据
+	int index = 0;//是否第一次输入数据
+	
+	double Sum = 0;  //MC键的总数据，Sum需要sum的数据来进行+或者-
+	int index1 = 0;//是否第一次按下MS键(M-)
+	
+	int com = 0;//代表加减乘除
+	int mode = 0;//表示小数点此时是否要显示，为0时显示
+	JFrame jf = new JFrame();
+    JTextField jtf_text = new JTextField();
+    
+    JButton jb_black = new JButton();
+    JButton jb_backspace = new JButton("Backspace");
+    JButton jb_ce = new JButton("CE");
+    JButton jb_c = new JButton("C");
+    
+    JButton jb_mc = new JButton("MC");
+    JButton jb_mr = new JButton("MR");
+    JButton jb_ms = new JButton("MS");
+    JButton jb_mplus = new JButton("M+");
+    
+    JButton jb_add = new JButton("+");
+    JButton jb_subtract = new JButton("-");
+    JButton jb_multiply = new JButton("*");
+    JButton jb_divide = new JButton("/");
+    
+    JButton jb_sqrt = new JButton("sqrt");
+    JButton jb_percent = new JButton("%");
+    JButton jb_reciprocal = new JButton("1/x");
+    JButton jb_equals = new JButton("=");
+    
+    JButton jb_point = new JButton(".");
+    JButton jb_or = new JButton("+/-");
+    
+    JButton jb_zero = new JButton("0");
+    JButton jb_one = new JButton("1");
+    JButton jb_two = new JButton("2");
+    JButton jb_three = new JButton("3");
+    JButton jb_four = new JButton("4");
+    JButton jb_five = new JButton("5");
+    JButton jb_six = new JButton("6");
+    JButton jb_seven = new JButton("7");
+    JButton jb_eight = new JButton("8");
+    JButton jb_nine = new JButton("9");
+    
+	public Calculator() {
+		super("计算器");
+		init();
+	}
+	public void init() {
+		jf.setSize(500,300);
+		//Dimension dim=Toolkit.getDefaultToolkit().getScreenSize();//获取电脑屏幕的高宽值
+        //this.setSize((int)(dim.width*0.3), (int)(dim.height*0.7));
+		jf.setLocationRelativeTo(null);
+		jf.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		jf.setVisible(true);
+		//jf.setResizable(false);//不允许拖动大小
+		
+		jtf_text.setHorizontalAlignment(JTextField.RIGHT);
+		
+		GridBagLayout gridBagLayout = new GridBagLayout();//实例化布局对象(网格包布局)
+		jf.setLayout(gridBagLayout);
+		GridBagConstraints gridBagConstraints = new GridBagConstraints();//实例化这个对象用来对组件进行管理
+	    gridBagConstraints.fill = GridBagConstraints.BOTH;//该方法是为了设置如果组件所在的区域比组件本身要大时的显示情况
+	    gridBagConstraints.insets = new Insets(1,1,1,1); //设置上下左右的间距
+	    gridBagConstraints.weightx = 0.01;//设置组件水平的拉伸幅度，如果为0就不用拉伸，范围为0-1
+	    gridBagConstraints.weighty = 0.01;
+	    //gridBagConstraints.anchor = GridBagConstraints.EAST;
+	    gridBagConstraints.gridx = 0;
+	    gridBagConstraints.gridy = 0;
+	    gridBagConstraints.gridwidth = 6;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jtf_text,gridBagConstraints);//将组件按布局放置在JFrame上
+	    
+	    gridBagConstraints.gridx = 0;
+	    gridBagConstraints.gridy = 1;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_black,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 1;
+	    gridBagConstraints.gridy = 1;
+	    gridBagConstraints.gridwidth = 2;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagConstraints.ipadx = -10;
+	    gridBagConstraints.ipady = -10;
+	    gridBagLayout.setConstraints(jb_backspace,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 3;
+	    gridBagConstraints.gridy = 1;
+	    gridBagConstraints.gridwidth = 2;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagConstraints.ipadx = 2;
+	    gridBagConstraints.ipady = 2;
+	    gridBagLayout.setConstraints(jb_ce,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 5;
+	    gridBagConstraints.gridy = 1;
+	    gridBagConstraints.gridwidth = 2;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_c,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 0;
+	    gridBagConstraints.gridy = 2;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_mc,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 1;
+	    gridBagConstraints.gridy = 2;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_seven,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 2;
+	    gridBagConstraints.gridy = 2;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    //gridBagConstraints.ipadx = -10;
+	    //gridBagConstraints.ipady = -10;
+	    gridBagLayout.setConstraints(jb_eight,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 3;
+	    gridBagConstraints.gridy = 2;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    //gridBagConstraints.ipadx = 15;
+	    //gridBagConstraints.ipady = 15;
+	    gridBagLayout.setConstraints(jb_nine,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 4;
+	    gridBagConstraints.gridy = 2;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_divide,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 5;
+	    gridBagConstraints.gridy = 2;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_sqrt,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 0;
+	    gridBagConstraints.gridy = 3;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_mr,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 1;
+	    gridBagConstraints.gridy = 3;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_four,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 2;
+	    gridBagConstraints.gridy = 3;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_five,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 3;
+	    gridBagConstraints.gridy = 3;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_six,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 4;
+	    gridBagConstraints.gridy = 3;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_multiply,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 5;
+	    gridBagConstraints.gridy = 3;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_percent,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 0;
+	    gridBagConstraints.gridy = 4;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_ms,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 1;
+	    gridBagConstraints.gridy = 4;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_one,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 2;
+	    gridBagConstraints.gridy = 4;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_two,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 3;
+	    gridBagConstraints.gridy = 4;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_three,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 4;
+	    gridBagConstraints.gridy = 4;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_subtract,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 5;
+	    gridBagConstraints.gridy = 4;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_reciprocal,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 0;
+	    gridBagConstraints.gridy = 5;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_mplus,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 1;
+	    gridBagConstraints.gridy = 5;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_zero,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 2;
+	    gridBagConstraints.gridy = 5;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_or,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 3;
+	    gridBagConstraints.gridy = 5;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_point,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 4;
+	    gridBagConstraints.gridy = 5;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_add,gridBagConstraints);
+	    
+	    gridBagConstraints.gridx = 5;
+	    gridBagConstraints.gridy = 5;
+	    gridBagConstraints.gridwidth = 1;
+	    gridBagConstraints.gridheight = 1;
+	    gridBagLayout.setConstraints(jb_equals,gridBagConstraints);
+	    
+	    jf.add(jtf_text);
+	    jtf_text.addActionListener(this);
+	    
+	    jf.add(jb_black);
+	    jb_black.addActionListener(this);
+	    jf.add(jb_backspace);
+	    jb_backspace.addActionListener(this);
+	    jf.add(jb_ce);
+	    jb_ce.addActionListener(this);
+	    jf.add(jb_c);
+	    jb_c.addActionListener(this);
+	    
+	    jf.add(jb_mc);
+	    jb_mc.addActionListener(this);
+	    jf.add(jb_seven);
+	    jb_seven.addActionListener(this);
+	    jf.add(jb_eight);
+	    jb_eight.addActionListener(this);
+	    jf.add(jb_nine);
+	    jb_nine.addActionListener(this);
+	    jf.add(jb_divide);
+	    jb_divide.addActionListener(this);
+	    jf.add(jb_sqrt);
+	    jb_sqrt.addActionListener(this);
+	    
+	    jf.add(jb_mr);
+	    jb_mr.addActionListener(this);
+	    jf.add(jb_four);
+	    jb_four.addActionListener(this);
+	    jf.add(jb_five);
+	    jb_five.addActionListener(this);
+	    jf.add(jb_six);
+	    jb_six.addActionListener(this);
+	    jf.add(jb_multiply);
+	    jb_multiply.addActionListener(this);
+	    jf.add(jb_percent);
+	    jb_percent.addActionListener(this);
+	    
+	    jf.add(jb_ms);
+	    jb_ms.addActionListener(this);
+	    jf.add(jb_one);
+	    jb_one.addActionListener(this);
+	    jf.add(jb_two);
+	    jb_two.addActionListener(this);
+	    jf.add(jb_three);
+	    jb_three.addActionListener(this);
+	    jf.add(jb_subtract);
+	    jb_subtract.addActionListener(this);
+	    jf.add(jb_reciprocal);
+	    jb_reciprocal.addActionListener(this);
+	    
+	    jf.add(jb_mplus);
+	    jb_mplus.addActionListener(this);
+	    jf.add(jb_zero);
+	    jb_zero.addActionListener(this);
+	    jf.add(jb_or);
+	    jb_or.addActionListener(this);
+	    jf.add(jb_point);
+	    jb_point.addActionListener(this);
+	    jf.add(jb_add);
+	    jb_add.addActionListener(this);
+	    jf.add(jb_equals);
+	    jb_equals.addActionListener(this);
+	}
+	public void setMode(int mode) {  //如果小数点被在此次输入中被点击过一次，则不能再被点击
+		this.mode = mode;
+		if(mode==0) {
+			jb_point.setEnabled(true);
+		}else {
+			jb_point.setEnabled(false);
+		}
+	}
+	public void clear() {//清除jtf_text的值
+		jtf_text.setText("");
+	}
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JButton obj = (JButton) e.getSource();
+		if(obj==jb_equals) {  //按下=键时
+			String txt = jtf_text.getText().trim();
+			if(!(txt==null||txt.length()<1)) {
+				double a = Double.parseDouble(new String(txt));
+				System.out.println("点击运算符后输入的数值为:"+a);
+				if(index==0) {  //如果什么运算符都没按，就直接输出原数据
+					sum = a;
+				}else {
+				if(com==1)
+				sum += a;
+				if(com==2)
+					sum -= a;
+				if(com==3)
+					sum *= a;
+				if(com==4 && a!=0)
+					sum /= a;
+				}
+				//String result = String.format("%.2f", a);  
+				jtf_text.setText(String.format("%.3f",sum));//保留三位小数，并四舍五入
+				//jtf_text.setText(sum+"");
+				System.out.println("结果为: "+sum);
+			}
+			setMode(0);
+		}
+		if(obj==jb_add||obj==jb_subtract||obj==jb_multiply||obj==jb_divide) {  //按下运算键时
+			String txt = jtf_text.getText().trim();
+			if(!(txt==null||txt.length()<1)) {
+				double a = Double.parseDouble(new String(txt));
+				System.out.println("点击运算符前的数值为:"+a);
+				if(index==0) {
+					sum = a;//当按backspace致输入为空或者本来输入就为空时，则当此次输入的数值为0
+				}else {
+				if(com==1)
+				sum += a;
+				if(com==2)
+					sum -= a;
+				if(com==3)
+					sum *= a;
+				if(com==4 && a!=0)
+					sum /= a;
+				}
+				jtf_text.setText(sum+"");
+			}
+			if(obj==jb_add) {
+				clear();
+				com = 1;
+				index = 1;//非第一次输入数据时,index改为1
+			}else if(obj==jb_subtract){
+				clear();
+				com = 2;
+				index = 1;
+			}else if(obj==jb_multiply) {
+				clear();
+				com = 3;
+				index = 1;
+			}else if(obj==jb_divide) {
+				clear();
+				com = 4;
+				index = 1;
+			}else {
+				
+			}
+			setMode(0);//此时小数点解封，可以被使用了
+		}
+		if(obj==jb_zero||obj==jb_one||obj==jb_two||obj==jb_three||obj==jb_four||obj==jb_five||obj==jb_six||obj==jb_seven||obj==jb_eight||obj==jb_nine||obj==jb_point) {
+			//按下数字和小数点时
+			jtf_text.setText(jtf_text.getText()+obj.getText());
+			if(obj==jb_point) {//如果小数点被点击则此次输入不能再被点击
+				setMode(1);
+			}
+		}
+		if(obj==jb_c) {  //清除全部
+			sum = 0;
+			clear();
+			index = 0;
+			setMode(0);//小数点恢复正常
+		}
+		if(obj==jb_ce) {  //清除jtf_text
+			clear();
+			setMode(0);//小数点恢复正常
+		}
+		if(obj==jb_backspace) {  //撤销一位
+			String str = jtf_text.getText().trim();
+			char[] ch = str.toCharArray();
+			if(ch.length<=1) {
+				jtf_text.setText("");
+				setMode(0);//小数点也恢复正常
+			}else {
+				char[] ch1 = new char[ch.length-1];
+				int i = 0;
+				for(i=0;i<ch1.length;i++) {
+					ch1[i] = ch[i];
+				}
+				jtf_text.setText(new String(ch1));
+				if(ch[i]=='.') {
+					setMode(0);//如果删除的字符时小数点，则小数点恢复正常
+				}
+			}
+		}
+		if(obj==jb_or) {  //点击到了负号，必须是先输入数值再点击正负号
+			jtf_text.setText("-"+jtf_text.getText());//正数变为负数
+		}
+		if(obj==jb_sqrt) {  //点击到了sqrt键
+			double k = Double.parseDouble(jtf_text.getText());
+			k = Math.sqrt(k);  //如果k小于0，则输入NaN
+			jtf_text.setText(k+"");
+		}
+		if(obj==jb_percent) {  //单击到了%号,必须是先输入数值再点击%号，然后点击=号出结果
+			String txt = jtf_text.getText().trim();
+			if(!(txt==null||txt.length()<1)) {
+				double a = Double.parseDouble(new String(txt));
+				double k = sum * a /100.0;
+				/*if(com==1)
+				sum += k;
+				if(com==2)
+					sum -= k;
+				if(com==3)
+					sum *= k;
+				if(com==4 && a!=0)
+					sum /= k;*/
+				//String result = String.format("%.2f", a);  
+				jtf_text.setText(String.format("%.3f",k));//保留三位小数，并四舍五入
+				//2+30% = 2+2*0.3 = 2.6
+				//2-30% = 2-2*0.3 = 1.4
+				//2*30% = 2*2*0.3 = 1.2
+				//2/30% = 2/(2*0.3) = 3.33
+		}
+	    }
+		if(obj==jb_reciprocal) {  //单击到了1/x键
+			//1 + 1/2 = 1.5
+			//1 - 1/2 = 0.5
+			//1 * 1/2 = 0.5
+			//1 / 1/2 = 2.000
+			String txt = jtf_text.getText().trim();
+			if(!(txt==null||txt.length()<1)) {
+				double a = Double.parseDouble(new String(txt));
+				if(a!=0) {
+					double k = 1/a*1.0;
+					jtf_text.setText(String.format("%.3f",k));
+				}
+			}
+		}
+		if(obj==jb_mc) {  //单击MC键，清空Sum 和 sum
+			sum = 0;  //一般计算的sum清空
+			Sum = 0;  //MS 和 M+ 模式下的Sum清空
+			clear();
+			index = 0;//恢复为第一次输入的状态
+			setMode(0);//小数点恢复正常
+			index1 = 0;//由于Sum初始值为0，此时恢复成第一次输入的状态，防止Sum=0-sum
+		}
+		if(obj==jb_mplus) {  //单击M+键
+			
+			String txt = jtf_text.getText().trim();  //把按下M+键前停留在Jtf.text上的数据进行sum计算
+			if(!(txt==null||txt.length()<1)) {
+				double a = Double.parseDouble(new String(txt));
+				if(index==0) {
+					sum = a;
+				}else {
+				if(com==1)
+				sum += a;
+				if(com==2)
+					sum -= a;
+				if(com==3)
+					sum *= a;
+				if(com==4 && a!=0)
+					sum /= a;
+				}
+			}
+			setMode(0);  //单击M+后小数点恢复正常
+			System.out.println("Sum的值为: "+Sum+"按下每次M+键之前的sum的值： "+sum);
+			Sum += sum;  //拿取按下M+键前的所有值的结果
+			System.out.println("按下M+键后的和:"+Sum);
+			
+			sum = 0;  //一下四句相当于执行按下C键，清空sum，并恢复为第一次输入的状态
+			clear();  //清除屏幕
+			index = 0;
+			setMode(0);//小数点恢复正常
+			
+		}
+		if(obj==jb_ms) {  //单击MS(M-)键
+			
+			String txt = jtf_text.getText().trim();  //把按下M-键前停留在Jtf.text上的数据进行sum计算
+			if(!(txt==null||txt.length()<1)) {
+				double a = Double.parseDouble(new String(txt));
+				System.out.println("a的值为: "+a);
+				if(index==0) {
+					sum = a;
+				}else {
+				if(com==1)
+				sum += a;
+				if(com==2)
+					sum -= a;
+				if(com==3)
+					sum *= a;
+				if(com==4 && a!=0)
+					sum /= a;
+				}
+			}
+			setMode(0);  //单击M+后小数点恢复正常
+			System.out.println("Sum的值为: "+Sum+"按下每次M-键之前的sum的值： "+sum);
+			if(index1==0) {  //此时是第一次按下M-(MS)键，因为Sum初始值为0,所以第一次按下M-键时不能用Sum-=sum
+				Sum = sum;  
+				index1 = 1;  //标记此时不是第一次按下M-键
+			}else{
+			Sum = Sum-sum;  //拿取按下MS(M-)键前的所有值的结果
+			System.out.println("SSSSum的值为: "+Sum);
+			}
+			
+			System.out.println("按下M-键后的和:"+Sum);
+			
+			sum = 0;  //一下四句相当于执行按下C键，清空sum，并恢复为第一次输入的状态
+			clear();
+			index = 0;
+			setMode(0);//小数点恢复正常
+			
+		}
+		if(obj==jb_mr) {  //单击MR键，输出结果至jtf-text
+			jtf_text.setText(String.format("%.3f",Sum));//保留三位小数，并四舍五入
+		}
+	}
+	public static void main(String[] args) {
+		Calculator cal = new Calculator();
+	}
+	
+}
